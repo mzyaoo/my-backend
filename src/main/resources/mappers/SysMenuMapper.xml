@@ -2,4 +2,45 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.imzyao.mappers.SysMenuMapper">
 
+
+    <select id="selectUserMenu" resultType="com.imzyao.modules.entity.SysMenu">
+        SELECT sm.*
+        FROM sys_menu sm
+                 LEFT JOIN sys_role_menu srm ON sm.menu_id = srm.menu_id
+                 LEFT JOIN sys_role sr ON sr.role_id = srm.role_id
+                 LEFT JOIN sys_user_role sur ON sur.role_id = sr.role_id
+                 LEFT JOIN sys_user su ON su.user_id = sur.user_id
+        WHERE su.user_name = #{username}
+          AND sm.`status` = 0
+        ORDER BY sm.order_num ASC
+    </select>
+
+    <select id="getUserMenu" resultType="com.imzyao.modules.entity.SysMenu">
+        select distinct m.menu_id,
+                        m.parent_id,
+                        m.menu_name,
+                        m.path,
+                        m.component,
+                        m.`query`,
+                        m.route_name,
+                        m.visible,
+                        m.status,
+                        ifnull(m.perms, '') as perms,
+                        m.is_frame,
+                        m.is_cache,
+                        m.menu_type,
+                        m.icon,
+                        m.order_num,
+                        m.create_time
+        from sys_menu m
+                 left join sys_role_menu rm on m.menu_id = rm.menu_id
+                 left join sys_user_role ur on rm.role_id = ur.role_id
+                 left join sys_role ro on ur.role_id = ro.role_id
+                 left join sys_user u on ur.user_id = u.user_id
+        where u.user_name = #{username}
+          and m.menu_type in ('M', 'C')
+          and m.status = 0
+          AND ro.status = 0
+        order by m.parent_id, m.order_num;
+    </select>
 </mapper>

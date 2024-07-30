@@ -2,6 +2,7 @@ package com.imzyao.exception;
 
 
 import com.imzyao.enums.ResponseCode;
+import lombok.Getter;
 
 /**
  * @author yaomaozhong
@@ -9,6 +10,7 @@ import com.imzyao.enums.ResponseCode;
  * @description: TODO
  * @date 2023/3/1113:46
  */
+@Getter
 public class CustomException extends RuntimeException {
 
     /**
@@ -29,10 +31,6 @@ public class CustomException extends RuntimeException {
     public CustomException(ResponseCode errorCode, String message) {
         super(message);
         this.code = errorCode.getCode();
-    }
-
-    public int getCode() {
-        return code;
     }
 
 

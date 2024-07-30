@@ -3,6 +3,7 @@ package com.imzyao.exception;
 import com.imzyao.enums.ResponseCode;
 import com.imzyao.results.Result;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.core.annotation.Order;
 import org.springframework.validation.BindException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
+import java.nio.file.AccessDeniedException;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -18,9 +20,11 @@ import java.util.stream.Collectors;
 /**
  * 全局异常处理
  */
+@Order(2)
 @Slf4j
 @RestControllerAdvice
 public class ExceptionControllerAdvice {
+
 
     /**
      * 自定义异常处理
@@ -28,24 +32,23 @@ public class ExceptionControllerAdvice {
      * @param e
      * @return
      */
-    @ExceptionHandler(CustomException.class)
-    public Result<?> businessExceptionHandler(CustomException e) {
-        log.error("BusinessException", e);
-        return Result.fail(e.getCode(), e.getMessage());
+    @ExceptionHandler(AccessDeniedException.class)
+    public Result<?> accessDeniedExceptionHandler(AccessDeniedException e) {
+        return Result.fail(ResponseCode.NO_AUTH_ERROR);
     }
 
+
     /**
-     * 系统运行时异常处理
+     * 自定义异常处理
      *
      * @param e
      * @return
      */
-    @ExceptionHandler(RuntimeException.class)
-    public Result<?> runtimeExceptionHandler(RuntimeException e) {
-        log.error("RuntimeException", e);
-        return Result.fail(ResponseCode.SYSTEM_ERROR);
+    @ExceptionHandler({CustomException.class})
+    public Result<?> businessExceptionHandler(CustomException e) {
+        log.error("CustomException", e);
+        return Result.fail(e.getCode(), e.getMessage());
     }
-
 
     /**
      * form-data 参数校验异常处理
@@ -62,6 +65,7 @@ public class ExceptionControllerAdvice {
         log.error("form-data 传参校验异常处理 -->", e);
         return Result.fail(ResponseCode.PARAMS_ERROR, errorList);
     }
+
 
     /**
      * json 参数校验异常处理
@@ -81,6 +85,7 @@ public class ExceptionControllerAdvice {
 
     /**
      * 处理单个参数校验失败抛出的异常
+     *
      * @param e
      * @return
      */

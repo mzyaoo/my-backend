@@ -3,8 +3,11 @@ package com.imzyao.modules.entity;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 
@@ -83,6 +86,17 @@ public class SysMenu implements Serializable {
     @ApiModelProperty("备注")
     private String remark;
 
+    @ApiModelProperty("子菜单信息")
+    public List<SysMenu> children;
+
+    public List<SysMenu> getChildren() {
+        return children;
+    }
+
+    public void setChildren(List<SysMenu> children) {
+        this.children = children;
+    }
+
     public Long getMenuId() {
         return menuId;
     }
@@ -90,6 +104,7 @@ public class SysMenu implements Serializable {
     public void setMenuId(Long menuId) {
         this.menuId = menuId;
     }
+
     public String getMenuName() {
         return menuName;
     }
@@ -97,6 +112,7 @@ public class SysMenu implements Serializable {
     public void setMenuName(String menuName) {
         this.menuName = menuName;
     }
+
     public Long getParentId() {
         return parentId;
     }
@@ -104,6 +120,7 @@ public class SysMenu implements Serializable {
     public void setParentId(Long parentId) {
         this.parentId = parentId;
     }
+
     public Integer getOrderNum() {
         return orderNum;
     }
@@ -111,6 +128,7 @@ public class SysMenu implements Serializable {
     public void setOrderNum(Integer orderNum) {
         this.orderNum = orderNum;
     }
+
     public String getPath() {
         return path;
     }
@@ -118,6 +136,7 @@ public class SysMenu implements Serializable {
     public void setPath(String path) {
         this.path = path;
     }
+
     public String getComponent() {
         return component;
     }
@@ -125,6 +144,7 @@ public class SysMenu implements Serializable {
     public void setComponent(String component) {
         this.component = component;
     }
+
     public String getQuery() {
         return query;
     }
@@ -132,6 +152,7 @@ public class SysMenu implements Serializable {
     public void setQuery(String query) {
         this.query = query;
     }
+
     public String getRouteName() {
         return routeName;
     }
@@ -139,6 +160,7 @@ public class SysMenu implements Serializable {
     public void setRouteName(String routeName) {
         this.routeName = routeName;
     }
+
     public Integer getIsFrame() {
         return isFrame;
     }
@@ -146,6 +168,7 @@ public class SysMenu implements Serializable {
     public void setIsFrame(Integer isFrame) {
         this.isFrame = isFrame;
     }
+
     public Integer getIsCache() {
         return isCache;
     }
@@ -153,6 +176,7 @@ public class SysMenu implements Serializable {
     public void setIsCache(Integer isCache) {
         this.isCache = isCache;
     }
+
     public String getMenuType() {
         return menuType;
     }
@@ -160,6 +184,7 @@ public class SysMenu implements Serializable {
     public void setMenuType(String menuType) {
         this.menuType = menuType;
     }
+
     public String getVisible() {
         return visible;
     }
@@ -167,6 +192,7 @@ public class SysMenu implements Serializable {
     public void setVisible(String visible) {
         this.visible = visible;
     }
+
     public String getStatus() {
         return status;
     }
@@ -174,6 +200,7 @@ public class SysMenu implements Serializable {
     public void setStatus(String status) {
         this.status = status;
     }
+
     public String getPerms() {
         return perms;
     }
@@ -181,6 +208,7 @@ public class SysMenu implements Serializable {
     public void setPerms(String perms) {
         this.perms = perms;
     }
+
     public String getIcon() {
         return icon;
     }
@@ -188,6 +216,7 @@ public class SysMenu implements Serializable {
     public void setIcon(String icon) {
         this.icon = icon;
     }
+
     public String getCreateBy() {
         return createBy;
     }
@@ -195,6 +224,7 @@ public class SysMenu implements Serializable {
     public void setCreateBy(String createBy) {
         this.createBy = createBy;
     }
+
     public LocalDateTime getCreateTime() {
         return createTime;
     }
@@ -202,6 +232,7 @@ public class SysMenu implements Serializable {
     public void setCreateTime(LocalDateTime createTime) {
         this.createTime = createTime;
     }
+
     public String getUpdateBy() {
         return updateBy;
     }
@@ -209,6 +240,7 @@ public class SysMenu implements Serializable {
     public void setUpdateBy(String updateBy) {
         this.updateBy = updateBy;
     }
+
     public LocalDateTime getUpdateTime() {
         return updateTime;
     }
@@ -216,6 +248,7 @@ public class SysMenu implements Serializable {
     public void setUpdateTime(LocalDateTime updateTime) {
         this.updateTime = updateTime;
     }
+
     public String getRemark() {
         return remark;
     }
@@ -227,26 +260,26 @@ public class SysMenu implements Serializable {
     @Override
     public String toString() {
         return "SysMenu{" +
-            "menuId=" + menuId +
-            ", menuName=" + menuName +
-            ", parentId=" + parentId +
-            ", orderNum=" + orderNum +
-            ", path=" + path +
-            ", component=" + component +
-            ", query=" + query +
-            ", routeName=" + routeName +
-            ", isFrame=" + isFrame +
-            ", isCache=" + isCache +
-            ", menuType=" + menuType +
-            ", visible=" + visible +
-            ", status=" + status +
-            ", perms=" + perms +
-            ", icon=" + icon +
-            ", createBy=" + createBy +
-            ", createTime=" + createTime +
-            ", updateBy=" + updateBy +
-            ", updateTime=" + updateTime +
-            ", remark=" + remark +
-        "}";
+                "menuId=" + menuId +
+                ", menuName=" + menuName +
+                ", parentId=" + parentId +
+                ", orderNum=" + orderNum +
+                ", path=" + path +
+                ", component=" + component +
+                ", query=" + query +
+                ", routeName=" + routeName +
+                ", isFrame=" + isFrame +
+                ", isCache=" + isCache +
+                ", menuType=" + menuType +
+                ", visible=" + visible +
+                ", status=" + status +
+                ", perms=" + perms +
+                ", icon=" + icon +
+                ", createBy=" + createBy +
+                ", createTime=" + createTime +
+                ", updateBy=" + updateBy +
+                ", updateTime=" + updateTime +
+                ", remark=" + remark +
+                "}";
     }
 }

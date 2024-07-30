@@ -3,11 +3,11 @@ package com.imzyao.security.config;
 import com.imzyao.security.JwtAuthenticationTokenFilter;
 import com.imzyao.security.RestAuthenticationEntryPoint;
 import com.imzyao.security.RestfulAccessDeniedHandler;
-import com.imzyao.service.ISysUserService;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -18,6 +18,7 @@ import javax.annotation.Resource;
 
 @Configuration
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class DefaultSecurityConfig {
 
     @Resource
@@ -29,8 +30,6 @@ public class DefaultSecurityConfig {
     @Resource
     private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
 
-    @Resource
-    private ISysUserService sysUserService;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
@@ -40,7 +39,7 @@ public class DefaultSecurityConfig {
                 .authorizeRequests()
                 // 接口放行
                 .antMatchers(
-                        "/user/login",
+                        "/login",
                         "/webjars/**",
                         "/v3/api-docs",
                         "/swagger-resources",
@@ -71,6 +70,7 @@ public class DefaultSecurityConfig {
 
         return httpSecurity.build();
     }
+
 
     /**
      * 获取AuthenticationManager（认证管理器），登录时认证使用

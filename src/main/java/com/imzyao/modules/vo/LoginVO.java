@@ -1,4 +1,4 @@
-package com.imzyao.modules.dto;
+package com.imzyao.modules.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

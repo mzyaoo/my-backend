@@ -7,16 +7,18 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
 @Data
 public class CustomUserDetails implements UserDetails {
 
     private final SysUserInfo sysUserInfo;
 
+    private final List<GrantedAuthority> userPermission;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.emptyList();
+        return userPermission;
     }
 
     @Override
