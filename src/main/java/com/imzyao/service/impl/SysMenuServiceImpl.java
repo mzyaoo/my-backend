@@ -102,7 +102,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
      * @return 组件信息
      */
     public String getComponent(SysMenu menu) {
-        String component = null;
+        String component = UserConstants.LAYOUT;
         if (StringUtils.isNotEmpty(menu.getComponent()) && !isMenuFrame(menu)) {
             component = menu.getComponent();
         } else if (StringUtils.isEmpty(menu.getComponent()) && menu.getParentId().intValue() != 0 && isInnerLink(menu)) {

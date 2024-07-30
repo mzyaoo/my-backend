@@ -42,6 +42,7 @@ public class DefaultSecurityConfig {
                         "/login",
                         "/webjars/**",
                         "/v3/api-docs",
+                        "/v2/api-docs",
                         "/swagger-resources",
                         "/favicon.ico",
                         "/doc.html"

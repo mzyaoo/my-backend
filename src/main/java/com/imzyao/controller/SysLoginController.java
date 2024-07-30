@@ -8,12 +8,15 @@ import com.imzyao.modules.model.LoginModel;
 import com.imzyao.results.Result;
 import com.imzyao.service.ISysMenuService;
 import com.imzyao.service.ISysUserService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.security.Principal;
 import java.util.List;
 
+@Api(tags = "登录相关接口", value = "登录相关接口")
 @RestController
 @RequestMapping
 public class SysLoginController {
@@ -30,6 +33,7 @@ public class SysLoginController {
      * @param loginModel 登录信息
      * @return 登录结果
      */
+    @ApiOperation("登录")
     @PostMapping("login")
     public Result<LoginVO> login(@RequestBody LoginModel loginModel) {
         return Result.success(sysUserService.login(loginModel));
@@ -40,6 +44,7 @@ public class SysLoginController {
      *
      * @return
      */
+    @ApiOperation("获取用户信息")
     @GetMapping("getUserInfo")
     public Result<UserInfoVO> getUserInfo(Principal principal) {
         UserInfoVO loginInfo = sysUserService.getLoginInfo(principal);
@@ -52,6 +57,7 @@ public class SysLoginController {
      * @param principal
      * @return
      */
+    @ApiOperation("查询用户菜单权限")
     @PostMapping("getUserMenu")
     public Result<List<RouterVo>> getUserMenu(Principal principal) {
         String username = principal.getName();
