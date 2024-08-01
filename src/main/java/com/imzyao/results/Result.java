@@ -1,6 +1,7 @@
 package com.imzyao.results;
 
 import com.imzyao.enums.ResponseCode;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,8 +12,7 @@ import java.io.Serializable;
  *
  * @author ruoyi
  */
-@Setter
-@Getter
+@Data
 public class Result<T> implements Serializable {
     private static final long serialVersionUID = 1L;
 

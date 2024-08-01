@@ -47,4 +47,14 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         return !isEmpty(coll);
     }
 
+    /**
+     * * 判断一个对象是否非空
+     *
+     * @param object Object
+     * @return true：非空 false：空
+     */
+    public static boolean isNotNull(Object object) {
+        return !isNull(object);
+    }
+
 }

@@ -1,6 +1,5 @@
 package com.imzyao.modules.vo;
 
-import com.imzyao.utils.StringUtils;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,53 +11,16 @@ import lombok.Setter;
 @Setter
 @Getter
 public class MetaVo {
-    /**
-     * 设置该路由在侧边栏和面包屑中展示的名字
-     */
-    private String title;
+
 
     /**
-     * 设置该路由的图标，对应路径src/assets/icons/svg
+     * 菜单图标
      */
     private String icon;
 
     /**
-     * 设置为true，则不会被 <keep-alive>缓存
+     * 是否隐藏
      */
-    private boolean noCache;
-
-    /**
-     * 内链地址（http(s)://开头）
-     */
-    private String link;
-
-    public MetaVo() {
-    }
-
-    public MetaVo(String title, String icon) {
-        this.title = title;
-        this.icon = icon;
-    }
-
-    public MetaVo(String title, String icon, boolean noCache) {
-        this.title = title;
-        this.icon = icon;
-        this.noCache = noCache;
-    }
-
-    public MetaVo(String title, String icon, String link) {
-        this.title = title;
-        this.icon = icon;
-        this.link = link;
-    }
-
-    public MetaVo(String title, String icon, boolean noCache, String link) {
-        this.title = title;
-        this.icon = icon;
-        this.noCache = noCache;
-        if (StringUtils.ishttp(link)) {
-            this.link = link;
-        }
-    }
+    private Boolean hidden;
 
 }

@@ -1,11 +1,10 @@
 package com.imzyao.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
+import com.imzyao.modules.entity.SysUser;
 import com.imzyao.modules.vo.UserInfoVO;
 import com.imzyao.modules.model.LoginModel;
-import com.imzyao.modules.entity.SysUser;
-import com.baomidou.mybatisplus.extension.service.IService;
 import com.imzyao.modules.vo.LoginVO;
-import com.imzyao.modules.pojo.SysUserInfo;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.security.Principal;
@@ -42,7 +41,7 @@ public interface ISysUserService extends IService<SysUser> {
      * @param username
      * @return
      */
-    SysUserInfo getUserInfo(String username);
+    SysUser getUserInfo(String username);
 
     /**
      * 获取登录用户信息

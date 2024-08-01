@@ -16,7 +16,7 @@ import javax.annotation.Resource;
 import java.security.Principal;
 import java.util.List;
 
-@Api(tags = "登录相关接口", value = "登录相关接口")
+@Api(value = "登录相关接口")
 @RestController
 @RequestMapping
 public class SysLoginController {
@@ -61,8 +61,64 @@ public class SysLoginController {
     @PostMapping("getUserMenu")
     public Result<List<RouterVo>> getUserMenu(Principal principal) {
         String username = principal.getName();
-        List<SysMenu> menu = sysMenuService.getUserMenu(username);
-        return Result.success(sysMenuService.buildMenus(menu));
+        List<SysMenu> menuList = sysMenuService.getSystemMenuList();
+
+//        String json = "[\n" +
+//                "  {\n" +
+//                "    \"path\": \"/system\",\n" +
+//                "    \"name\": \"系统管理\",\n" +
+//                "    \"children\": [\n" +
+//                "      {\n" +
+//                "        \"path\": \"/user\",\n" +
+//                "        \"name\": \"用户管理\",\n" +
+//                "        \"component\": \"system/user/index\",\n" +
+//                "        \"meta\": {\n" +
+//                "          \"sort\": 1\n" +
+//                "        }\n" +
+//                "      },\n" +
+//                "      {\n" +
+//                "        \"path\": \"/dept\",\n" +
+//                "        \"name\": \"部门管理\",\n" +
+//                "        \"component\": \"system/dept/index\",\n" +
+//                "        \"meta\": {\n" +
+//                "          \"sort\": 2\n" +
+//                "        }\n" +
+//                "      },\n" +
+//                "      {\n" +
+//                "        \"path\": \"/role\",\n" +
+//                "        \"name\": \"角色管理\",\n" +
+//                "        \"component\": \"system/role/index\",\n" +
+//                "        \"meta\": {\n" +
+//                "          \"sort\": 3\n" +
+//                "        }\n" +
+//                "      },\n" +
+//                "      {\n" +
+//                "        \"path\": \"/menu\",\n" +
+//                "        \"name\": \"菜单管理\",\n" +
+//                "        \"component\": \"system/menu/index\",\n" +
+//                "        \"meta\": {\n" +
+//                "          \"sort\": 4\n" +
+//                "        }\n" +
+//                "      },\n" +
+//                "      {\n" +
+//                "        \"path\": \"/job\",\n" +
+//                "        \"name\": \"定时任务配置\",\n" +
+//                "        \"component\": \"system/job/index\",\n" +
+//                "        \"meta\": {\n" +
+//                "          \"sort\": 4\n" +
+//                "        }\n" +
+//                "      }\n" +
+//                "    ],\n" +
+//                "    \"meta\": {\n" +
+//                "      \"sort\": 2,\n" +
+//                "      \"icon\": \"IconSettings\"\n" +
+//                "    }\n" +
+//                "  }\n" +
+//                "]";
+//
+//        JSONArray objects = JSON.parseArray(json);
+
+        return Result.success(sysMenuService.buildRouterInfo(menuList));
     }
 
 }

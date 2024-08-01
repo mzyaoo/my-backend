@@ -8,29 +8,25 @@ import java.util.List;
 
 /**
  * <p>
- * 菜单权限表 服务类
+ * 服务类
  * </p>
  *
  * @author imzyao
- * @since 2024-07-29
+ * @since 2024-08-01
  */
 public interface ISysMenuService extends IService<SysMenu> {
 
     /**
-     * 查询用户菜单权限
-     *
-     * @param username 用户名
-     * @return
-     */
-    List<SysMenu> getUserMenu(String username);
-
-
-    /**
-     * 构建前端菜单
-     *
+     * 获取前端需要的路由信息
      * @param menus
      * @return
      */
-    List<RouterVo> buildMenus(List<SysMenu> menus);
+    List<RouterVo> buildRouterInfo(List<SysMenu> menus);
+
+    /**
+     * 获取系统菜单
+     * @return
+     */
+    List<SysMenu> getSystemMenuList();
 
 }

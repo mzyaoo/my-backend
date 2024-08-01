@@ -1,18 +1,17 @@
 package com.imzyao.security.entity;
 
-import com.imzyao.modules.pojo.SysUserInfo;
+import com.imzyao.modules.entity.SysUser;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.List;
 
 @Data
 public class CustomUserDetails implements UserDetails {
 
-    private final SysUserInfo sysUserInfo;
+    private final SysUser sysUser;
 
     private final List<GrantedAuthority> userPermission;
 
@@ -23,12 +22,12 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return sysUserInfo.getPassword();
+        return sysUser.getPassWord();
     }
 
     @Override
     public String getUsername() {
-        return sysUserInfo.getUserName();
+        return sysUser.getUserName();
     }
 
     @Override
@@ -48,6 +47,6 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return sysUserInfo.getStatus().equals("1");
+        return sysUser.getStatus().equals("1");
     }
 }
