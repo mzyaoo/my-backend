@@ -1,6 +1,7 @@
 package com.imzyao.controller;
 
 import com.imzyao.results.Result;
+import io.swagger.annotations.Api;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
  * @author imzyao
  * @since 2024-07-29
  */
+@Api
 @RestController
 @RequestMapping("/user")
 public class SysUserController {
@@ -22,7 +24,7 @@ public class SysUserController {
      * @return
      */
     @GetMapping("list")
-    @PreAuthorize("hasAnyAuthority('system:user:main')")
+    @PreAuthorize("hasAnyAuthority('system:user:add')")
     public Result<?> list() {
         return Result.success();
     }

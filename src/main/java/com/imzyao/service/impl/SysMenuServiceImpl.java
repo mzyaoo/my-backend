@@ -1,14 +1,23 @@
 package com.imzyao.service.impl;
 
 import cn.hutool.core.collection.CollectionUtil;
+import com.imzyao.constant.UserConstants;
+import com.imzyao.enums.ResponseCode;
+import com.imzyao.mappers.SysUserMapper;
 import com.imzyao.modules.entity.SysMenu;
 import com.imzyao.mappers.SysMenuMapper;
+import com.imzyao.modules.entity.SysUser;
 import com.imzyao.modules.vo.MetaVo;
 import com.imzyao.modules.vo.RouterVo;
+import com.imzyao.results.Result;
 import com.imzyao.service.ISysMenuService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.imzyao.service.ISysUserService;
+import com.imzyao.utils.ThrowUtils;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.Resource;
+import java.security.Principal;
 import java.util.*;
 
 /**
@@ -22,6 +31,25 @@ import java.util.*;
 @Service
 public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> implements ISysMenuService {
 
+    @Resource
+    private SysUserMapper sysUserMapper;
+
+    @Override
+    public List<RouterVo> userRouterList(Principal principal) {
+        String username = principal.getName();
+        SysUser sysUser = sysUserMapper.selectByUserName(username);
+        // 校验用户是否存在，不存在抛出异常
+        ThrowUtils.throwIf(sysUser == null, ResponseCode.NOT_FOUND_ERROR, "用户不存在！");
+        // 校验用户是否为超级管理员，是则返回所有菜单
+        List<SysMenu> menuList = new ArrayList<>();
+        if (sysUser.getUserName().equals(UserConstants.SYSTEM_SUP_USER)) {
+            menuList = this.getSystemMenuList();
+        } else {
+            menuList = Collections.emptyList();
+        }
+        return buildRouterInfo(menuList);
+    }
+
     @Override
     public List<RouterVo> buildRouterInfo(List<SysMenu> menus) {
 
@@ -34,7 +62,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
             router.setSort(menu.getOrderNum());
             MetaVo meta = genMetaFormMenu(menu);
             router.setMeta(meta);
-            if (CollectionUtil.isNotEmpty(menu.getChildren())){
+            if (CollectionUtil.isNotEmpty(menu.getChildren())) {
                 router.setChildren(buildRouterInfo(menu.getChildren()));
             }
             routers.add(router);
@@ -46,6 +74,11 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     public List<SysMenu> getSystemMenuList() {
         List<SysMenu> menuList = this.baseMapper.getSystemMenuList();
         return getChildPerms(menuList, 0);
+    }
+
+    @Override
+    public List<SysMenu> getSystemPermissionList() {
+        return this.baseMapper.getSystemPermissionList();
     }
 
     /**

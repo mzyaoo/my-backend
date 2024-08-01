@@ -21,6 +21,10 @@
                `update_time`
         from sys_user
     </sql>
+    <select id="selectByUserName" resultType="com.imzyao.modules.entity.SysUser">
+        <include refid="selectUserSql"/>
+        where user_name = #{userName}
+    </select>
 
 
 </mapper>

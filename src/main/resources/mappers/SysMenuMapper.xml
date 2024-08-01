@@ -28,4 +28,11 @@
     </select>
 
 
+    <select id="getSystemPermissionList" resultType="com.imzyao.modules.entity.SysMenu">
+        <include refid="selectMenuSql"/>
+        where status = '0'
+        and menu_type in ('F')
+    </select>
+
+
 </mapper>

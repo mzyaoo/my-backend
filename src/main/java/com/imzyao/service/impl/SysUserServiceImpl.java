@@ -2,7 +2,10 @@ package com.imzyao.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.imzyao.constant.UserConstants;
 import com.imzyao.enums.ResponseCode;
+import com.imzyao.mappers.SysMenuMapper;
+import com.imzyao.modules.entity.SysMenu;
 import com.imzyao.modules.entity.SysUser;
 import com.imzyao.modules.vo.UserInfoVO;
 import com.imzyao.modules.model.LoginModel;
@@ -16,6 +19,8 @@ import com.imzyao.utils.StringUtils;
 import com.imzyao.utils.ThrowUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,6 +29,9 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.security.Principal;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * <p>
@@ -47,6 +55,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
 
     @Resource
     private PasswordEncoder passwordEncoder;
+
+    @Resource
+    private SysMenuMapper sysMenuMapper;
 
 
     /**
@@ -90,17 +101,25 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         boolean userStatus = StringUtils.equals(sysUser.getStatus(), "1");
         ThrowUtils.throwIf(userStatus, ResponseCode.NOT_FOUND_ERROR, "该账户已封禁！");
 
-//        List<SysMenu> permissionList = sysMenuMapper.selectUserMenu(userInfo.getUserName());
-//
-//        List<GrantedAuthority> userPermission = new ArrayList<>();
-//        List<String> collect = permissionList.stream().map(SysMenu::getPerms).collect(Collectors.toList());
-//        for (String authority : collect) {
-//            if (!("").equals(authority) & authority != null) {
-//                GrantedAuthority grantedAuthority = new SimpleGrantedAuthority(authority);
-//                userPermission.add(grantedAuthority);
-//            }
-//        }
-        return new CustomUserDetails(sysUser, new ArrayList<>());
+        List<GrantedAuthority> userPermission = new ArrayList<>();
+        List<SysMenu> menus = new ArrayList<>();
+
+        if (username.equals(UserConstants.SYSTEM_SUP_USER)) {
+            // 超级管理员 权限
+            menus = sysMenuMapper.getSystemPermissionList();
+        } else {
+            // 用户权限
+            menus = Collections.emptyList();
+        }
+
+        List<String> collect = menus.stream().map(SysMenu::getPerms).collect(Collectors.toList());
+        for (String authority : collect) {
+            if (StringUtils.isNotEmpty(authority)) {
+                GrantedAuthority auth = new SimpleGrantedAuthority(authority);
+                userPermission.add(auth);
+            }
+        }
+        return new CustomUserDetails(sysUser, userPermission);
     }
 
     /**
@@ -129,6 +148,12 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         SysUser user = this.getUserInfo(name);
         ThrowUtils.throwIf(user == null, ResponseCode.SYSTEM_ERROR, "用户信息获取失败！");
         userInfoVO.setUserName(user.getUserName());
+
+        if (name.equals(UserConstants.SYSTEM_SUP_USER)) {
+            List<String> perms = sysMenuMapper.getSystemPermissionList()
+                    .stream().map(SysMenu::getPerms).collect(Collectors.toList());
+            userInfoVO.setPermissions(perms);
+        }
 
         return userInfoVO;
     }

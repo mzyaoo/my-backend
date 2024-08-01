@@ -4,7 +4,9 @@ import com.imzyao.modules.entity.SysMenu;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.imzyao.modules.vo.RouterVo;
 
+import java.security.Principal;
 import java.util.List;
+import java.util.Set;
 
 /**
  * <p>
@@ -17,7 +19,17 @@ import java.util.List;
 public interface ISysMenuService extends IService<SysMenu> {
 
     /**
+     * 获取用户路由信息
+     *
+     * @param principal
+     * @return
+     */
+    List<RouterVo> userRouterList(Principal principal);
+
+
+    /**
      * 获取前端需要的路由信息
+     *
      * @param menus
      * @return
      */
@@ -25,8 +37,16 @@ public interface ISysMenuService extends IService<SysMenu> {
 
     /**
      * 获取系统菜单
+     *
      * @return
      */
     List<SysMenu> getSystemMenuList();
+
+    /**
+     * 查询所有系统权限
+     *
+     * @return
+     */
+    List<SysMenu> getSystemPermissionList();
 
 }
