@@ -1,6 +1,7 @@
 package com.imzyao.security.config;
 
 import com.imzyao.security.JwtAuthenticationTokenFilter;
+import com.imzyao.security.LogoutSuccessHandlerImpl;
 import com.imzyao.security.RestAuthenticationEntryPoint;
 import com.imzyao.security.RestfulAccessDeniedHandler;
 import org.springframework.context.annotation.Bean;
@@ -29,6 +30,9 @@ public class DefaultSecurityConfig {
 
     @Resource
     private RestAuthenticationEntryPoint restAuthenticationEntryPoint;
+
+    @Resource
+    private LogoutSuccessHandlerImpl logoutSuccessHandler;
 
 
     @Bean
@@ -66,6 +70,8 @@ public class DefaultSecurityConfig {
                 // 基于JWT令牌，无需Session
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
+                // 添加Logout filter
+                .logout(logout -> logout.logoutUrl("/logout").logoutSuccessHandler(logoutSuccessHandler))
                 // 拦截器
                 .addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
 

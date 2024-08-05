@@ -19,7 +19,7 @@ public class UserInfoVO {
     /**
      * 用户ID
      */
-    private Long userId;
+    private Integer userId;
 
     /**
      * 用户操作权限

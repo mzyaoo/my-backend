@@ -2,6 +2,7 @@ package com.imzyao.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.imzyao.components.RedisCache;
 import com.imzyao.constant.UserConstants;
 import com.imzyao.enums.ResponseCode;
 import com.imzyao.mappers.SysMenuMapper;
@@ -18,6 +19,7 @@ import com.imzyao.utils.JwtTokenUtil;
 import com.imzyao.utils.StringUtils;
 import com.imzyao.utils.ThrowUtils;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -31,6 +33,7 @@ import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -53,11 +56,17 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     @Value("${jwt.tokenHeader}")
     private String tokenHeader;
 
+    @Value("${jwt.expiration}")
+    private Long expiration;
+
     @Resource
     private PasswordEncoder passwordEncoder;
 
     @Resource
     private SysMenuMapper sysMenuMapper;
+
+    @Resource
+    private RedisCache redisCache;
 
 
     /**
@@ -81,6 +90,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(userDetails, null, null);
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         String token = tokenUtil.generateToken(userDetails);
+
+        redisCache.setCacheObject(username, userDetails, expiration, TimeUnit.SECONDS);
+
         return new LoginVO(token, tokenHead, tokenHeader);
     }
 
@@ -148,6 +160,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         SysUser user = this.getUserInfo(name);
         ThrowUtils.throwIf(user == null, ResponseCode.SYSTEM_ERROR, "用户信息获取失败！");
         userInfoVO.setUserName(user.getUserName());
+        userInfoVO.setUserId(user.getId());
+        userInfoVO.setNickName(user.getNickName());
+        userInfoVO.setAvatar(user.getAvatar());
 
         if (name.equals(UserConstants.SYSTEM_SUP_USER)) {
             List<String> perms = sysMenuMapper.getSystemPermissionList()

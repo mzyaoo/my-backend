@@ -2,6 +2,8 @@ package com.imzyao.utils;
 
 import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
+import com.imzyao.components.RedisCache;
+import com.imzyao.security.entity.CustomUserDetails;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -11,6 +13,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -44,6 +48,12 @@ public class JwtTokenUtil {
     @Value("${jwt.tokenHead}")
     private String tokenHead;
 
+    @Value("${jwt.tokenHeader}")
+    private String tokenHeader;
+
+    @Resource
+    private RedisCache redisCache;
+
     /**
      * 根据负责生成JWT的token
      */
@@ -53,6 +63,23 @@ public class JwtTokenUtil {
                 .setExpiration(generateExpirationDate())
                 .signWith(SignatureAlgorithm.HS512, secret)
                 .compact();
+    }
+
+    /**
+     * 获取用户身份信息
+     *
+     * @return 用户信息
+     */
+    public CustomUserDetails getLoginUserFormToken(HttpServletRequest request) {
+        String authHeader = request.getHeader(this.tokenHeader);
+        if (authHeader != null && authHeader.startsWith(this.tokenHead)) {
+            String token = authHeader.substring(this.tokenHead.length());// The part after "Bearer "
+            String name = getUserNameFromToken(token);
+            if (name != null) {
+                return redisCache.getCacheObject(name);
+            }
+        }
+        return null;
     }
 
     /**
