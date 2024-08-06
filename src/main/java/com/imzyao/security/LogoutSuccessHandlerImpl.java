@@ -2,6 +2,7 @@ package com.imzyao.security;
 
 import cn.hutool.json.JSONUtil;
 import com.imzyao.components.RedisCache;
+import com.imzyao.constant.RedisConstants;
 import com.imzyao.enums.ResponseCode;
 import com.imzyao.results.Result;
 import com.imzyao.security.entity.CustomUserDetails;
@@ -35,7 +36,8 @@ public class LogoutSuccessHandlerImpl implements LogoutSuccessHandler {
         CustomUserDetails userDetails = jwtTokenUtil.getLoginUserFormToken(request);
         if (userDetails != null) {
             String name = userDetails.getSysUser().getUserName();
-            redisCache.deleteObject(name);
+            String loginKey = RedisConstants.getLoginKey(name);
+            redisCache.deleteObject(loginKey);
         }
         ServletUtils.renderString(response, JSONUtil.parse(Result.success(null, "退出成功！")));
     }

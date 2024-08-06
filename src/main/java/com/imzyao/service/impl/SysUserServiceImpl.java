@@ -3,6 +3,7 @@ package com.imzyao.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.imzyao.components.RedisCache;
+import com.imzyao.constant.RedisConstants;
 import com.imzyao.constant.UserConstants;
 import com.imzyao.enums.ResponseCode;
 import com.imzyao.mappers.SysMenuMapper;
@@ -82,7 +83,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         // 用户输入的密码
         String userInputPwd = loginModel.getPassword();
         // 获取用户信息
-        UserDetails userDetails = loadUserByUsername(username);
+        CustomUserDetails userDetails = loadUserByUsername(username);
         // 数据库中的用户密码
         String password = userDetails.getPassword();
         // 校验密码是否正确
@@ -91,7 +92,9 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         SecurityContextHolder.getContext().setAuthentication(authenticationToken);
         String token = tokenUtil.generateToken(userDetails);
 
-        redisCache.setCacheObject(username, userDetails, expiration, TimeUnit.SECONDS);
+
+        String loginKey = RedisConstants.getLoginKey(username);
+        redisCache.setCacheObject(loginKey, userDetails, expiration, TimeUnit.SECONDS);
 
         return new LoginVO(token, tokenHead, tokenHeader);
     }
@@ -103,7 +106,7 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
      * @return
      */
     @Override
-    public UserDetails loadUserByUsername(String username) {
+    public CustomUserDetails loadUserByUsername(String username) {
         SysUser sysUser = getUserInfo(username);
         ThrowUtils.throwIf(sysUser == null, ResponseCode.NOT_FOUND_ERROR, "用户名或密码错误！");
         // 校验用户是否被删除
