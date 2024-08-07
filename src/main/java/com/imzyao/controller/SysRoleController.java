@@ -1,24 +1,29 @@
 package com.imzyao.controller;
 
-import com.imzyao.modules.entity.SysMenu;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.imzyao.modules.dto.SearchRoleTableParam;
+import com.imzyao.modules.entity.SysRole;
 import com.imzyao.results.Result;
-import com.imzyao.service.ISysMenuService;
+import com.imzyao.service.ISysRoleService;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
 
+@Api
 @RestController
-@RequestMapping("menu")
-public class SysMenuController {
+@RequestMapping("role")
+public class SysRoleController {
 
     @Resource
-    private ISysMenuService sysMenuService;
+    private ISysRoleService sysRoleService;
 
     @PostMapping("list")
-    public Result<SysMenu> list() {
-        return new Result<>();
+    public Result<IPage<SysRole>> list(SearchRoleTableParam param) {
+        IPage<SysRole> iPage = sysRoleService.queryTableList(param);
+        return Result.success(iPage);
     }
 
     @PostMapping("add")
@@ -37,5 +42,6 @@ public class SysMenuController {
     public Result<?> delete() {
         return new Result<>();
     }
+
 
 }

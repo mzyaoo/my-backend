@@ -4,7 +4,9 @@ spring:
   mvc:
     pathmatch:
       matching-strategy: ant_path_matcher
-
+  cache:
+    ehcache:
+      config: ehcache.xml
 
 jwt:
   tokenHeader: Authorization #JWT存储的请求头

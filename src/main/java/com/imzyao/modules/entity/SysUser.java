@@ -47,7 +47,7 @@ public class SysUser implements Serializable {
     @ApiModelProperty("邮箱")
     private String email;
 
-    @ApiModelProperty("帐号状态（0正常 1停用）")
+    @ApiModelProperty("用户性别（0男 1女 2未知）")
     private String sex;
 
     @ApiModelProperty("帐号状态（0正常 1停用）")

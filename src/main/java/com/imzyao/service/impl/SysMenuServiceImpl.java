@@ -81,6 +81,26 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         return this.baseMapper.getSystemPermissionList();
     }
 
+    @Override
+    public List<SysUser> queryTableList() {
+        return Collections.emptyList();
+    }
+
+    @Override
+    public void add(SysUser sysUser) {
+
+    }
+
+    @Override
+    public void editById(SysUser sysUser) {
+
+    }
+
+    @Override
+    public void deleteById(Integer id) {
+
+    }
+
     /**
      * 根据父节点的ID获取所有子节点
      *

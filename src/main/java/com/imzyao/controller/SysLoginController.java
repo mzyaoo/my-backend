@@ -3,7 +3,7 @@ package com.imzyao.controller;
 import com.imzyao.modules.vo.LoginVO;
 import com.imzyao.modules.vo.RouterVo;
 import com.imzyao.modules.vo.UserInfoVO;
-import com.imzyao.modules.model.LoginModel;
+import com.imzyao.modules.dto.LoginParam;
 import com.imzyao.results.Result;
 import com.imzyao.service.ISysMenuService;
 import com.imzyao.service.ISysUserService;
@@ -15,7 +15,7 @@ import javax.annotation.Resource;
 import java.security.Principal;
 import java.util.List;
 
-@Api(value = "登录相关接口")
+//@Api(value = "登录相关接口")
 @RestController
 @RequestMapping
 public class SysLoginController {
@@ -29,13 +29,13 @@ public class SysLoginController {
     /**
      * 登录接口
      *
-     * @param loginModel 登录信息
+     * @param loginParam 登录信息
      * @return 登录结果
      */
     @ApiOperation("登录")
     @PostMapping("login")
-    public Result<LoginVO> login(@RequestBody LoginModel loginModel) {
-        return Result.success(sysUserService.login(loginModel));
+    public Result<LoginVO> login(@RequestBody LoginParam loginParam) {
+        return Result.success(sysUserService.login(loginParam));
     }
 
     /**

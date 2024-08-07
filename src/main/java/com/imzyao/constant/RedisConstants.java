@@ -1,7 +1,7 @@
 package com.imzyao.constant;
 
 /**
- * 用户常量信息
+ * Redis 常量
  */
 public class RedisConstants {
 

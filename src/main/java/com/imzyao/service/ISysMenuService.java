@@ -2,6 +2,7 @@ package com.imzyao.service;
 
 import com.imzyao.modules.entity.SysMenu;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.imzyao.modules.entity.SysUser;
 import com.imzyao.modules.vo.RouterVo;
 
 import java.security.Principal;
@@ -48,5 +49,36 @@ public interface ISysMenuService extends IService<SysMenu> {
      * @return
      */
     List<SysMenu> getSystemPermissionList();
+
+    /**
+     * 查询表格数据
+     *
+     * @return
+     */
+    List<SysUser> queryTableList();
+
+
+    /**
+     * 新增数据
+     *
+     * @param sysUser
+     */
+    void add(SysUser sysUser);
+
+
+    /**
+     * 根据id修改数据
+     *
+     * @param sysUser
+     */
+    void editById(SysUser sysUser);
+
+    /**
+     * 根据id删除数据
+     *
+     * @param id
+     */
+    void deleteById(Integer id);
+
 
 }

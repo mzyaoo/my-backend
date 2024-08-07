@@ -2,15 +2,18 @@ package com.imzyao.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.imzyao.components.RedisCache;
 import com.imzyao.constant.RedisConstants;
 import com.imzyao.constant.UserConstants;
 import com.imzyao.enums.ResponseCode;
 import com.imzyao.mappers.SysMenuMapper;
+import com.imzyao.modules.dto.SearchUserTableParam;
 import com.imzyao.modules.entity.SysMenu;
 import com.imzyao.modules.entity.SysUser;
 import com.imzyao.modules.vo.UserInfoVO;
-import com.imzyao.modules.model.LoginModel;
+import com.imzyao.modules.dto.LoginParam;
 import com.imzyao.mappers.SysUserMapper;
 import com.imzyao.modules.vo.LoginVO;
 import com.imzyao.security.entity.CustomUserDetails;
@@ -20,12 +23,10 @@ import com.imzyao.utils.JwtTokenUtil;
 import com.imzyao.utils.StringUtils;
 import com.imzyao.utils.ThrowUtils;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -73,15 +74,15 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     /**
      * 登录
      *
-     * @param loginModel 登录参数
+     * @param loginParam 登录参数
      * @return
      */
     @Override
-    public LoginVO login(LoginModel loginModel) {
+    public LoginVO login(LoginParam loginParam) {
         // 用户名
-        String username = loginModel.getUsername();
+        String username = loginParam.getUsername();
         // 用户输入的密码
-        String userInputPwd = loginModel.getPassword();
+        String userInputPwd = loginParam.getPassword();
         // 获取用户信息
         CustomUserDetails userDetails = loadUserByUsername(username);
         // 数据库中的用户密码
@@ -174,6 +175,30 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
         }
 
         return userInfoVO;
+    }
+
+    @Override
+    public IPage<SysUser> queryTableList(SearchUserTableParam param) {
+        long current = param.getCurrent();
+        long pageSize = param.getPageSize();
+        Page<SysUser> page = new Page<>(current, pageSize);
+        LambdaQueryWrapper<SysUser> queryWrapper = new QueryWrapper<SysUser>().lambda();
+        return this.page(page, queryWrapper);
+    }
+
+    @Override
+    public void add(SysUser sysUser) {
+        this.save(sysUser);
+    }
+
+    @Override
+    public void editById(SysUser sysUser) {
+        this.updateById(sysUser);
+    }
+
+    @Override
+    public void deleteById(Integer id) {
+
     }
 
 

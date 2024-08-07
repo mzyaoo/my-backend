@@ -1,9 +1,15 @@
 package com.imzyao.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.imzyao.modules.dto.SearchUserTableParam;
+import com.imzyao.modules.entity.SysUser;
 import com.imzyao.results.Result;
+import com.imzyao.service.ISysUserService;
 import io.swagger.annotations.Api;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
 
 /**
  * <p>
@@ -18,15 +24,38 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/user")
 public class SysUserController {
 
+    @Resource
+    private ISysUserService sysUserService;
+
     /**
      * 用户列表
      *
      * @return
      */
     @GetMapping("list")
-    @PreAuthorize("hasAnyAuthority('system:user:add')")
-    public Result<?> list() {
-        return Result.success();
+//    @PreAuthorize("hasAnyAuthority('system:user:list')")
+    public Result<IPage<SysUser>> list(SearchUserTableParam param) {
+        IPage<SysUser> iPage = sysUserService.queryTableList(param);
+        return Result.success(iPage);
+    }
+
+
+    @PostMapping("add")
+    public Result<?> add(SysUser sysUser) {
+        sysUserService.add(sysUser);
+        return new Result<>();
+    }
+
+
+    @PostMapping("update")
+    public Result<?> update() {
+        return new Result<>();
+    }
+
+
+    @PostMapping("delete")
+    public Result<?> delete() {
+        return new Result<>();
     }
 
 }
