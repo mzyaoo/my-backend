@@ -27,6 +27,18 @@
         where status = '0' and menu_type in ('M', 'C')
     </select>
 
+    <select id="getMenuList" resultType="com.imzyao.modules.entity.SysMenu"
+            parameterType="com.imzyao.modules.dto.SearchMenuTableParam">
+        <include refid="selectMenuSql"/>
+        <where>
+            <if test="param.menuName != null and param.menuName != ''">
+                and name like concat('%', #{param.menuName}, '%')
+            </if>
+            <if test="param.status != null">
+                and status = #{param.status}
+            </if>
+        </where>
+    </select>
 
     <select id="getSystemPermissionList" resultType="com.imzyao.modules.entity.SysMenu">
         <include refid="selectMenuSql"/>

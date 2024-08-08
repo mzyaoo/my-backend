@@ -15,7 +15,7 @@ import javax.annotation.Resource;
 import java.security.Principal;
 import java.util.List;
 
-//@Api(value = "登录相关接口")
+@Api(value = "登录相关接口")
 @RestController
 @RequestMapping
 public class SysLoginController {

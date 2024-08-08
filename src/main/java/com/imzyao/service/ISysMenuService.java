@@ -1,5 +1,6 @@
 package com.imzyao.service;
 
+import com.imzyao.modules.dto.SearchMenuTableParam;
 import com.imzyao.modules.entity.SysMenu;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.imzyao.modules.entity.SysUser;
@@ -18,6 +19,12 @@ import java.util.Set;
  * @since 2024-08-01
  */
 public interface ISysMenuService extends IService<SysMenu> {
+
+    /**
+     * 获取菜单树
+     * @return
+     */
+    List<SysMenu> getMenuTree(SearchMenuTableParam param);
 
     /**
      * 获取用户路由信息

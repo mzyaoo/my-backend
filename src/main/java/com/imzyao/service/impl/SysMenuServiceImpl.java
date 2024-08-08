@@ -4,6 +4,7 @@ import cn.hutool.core.collection.CollectionUtil;
 import com.imzyao.constant.UserConstants;
 import com.imzyao.enums.ResponseCode;
 import com.imzyao.mappers.SysUserMapper;
+import com.imzyao.modules.dto.SearchMenuTableParam;
 import com.imzyao.modules.entity.SysMenu;
 import com.imzyao.mappers.SysMenuMapper;
 import com.imzyao.modules.entity.SysUser;
@@ -33,6 +34,12 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 
     @Resource
     private SysUserMapper sysUserMapper;
+
+    @Override
+    public List<SysMenu> getMenuTree(SearchMenuTableParam param) {
+        List<SysMenu> list = this.baseMapper.getMenuList(param);
+        return getChildPerms(list, 0);
+    }
 
     @Override
     public List<RouterVo> userRouterList(Principal principal) {

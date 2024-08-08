@@ -10,4 +10,10 @@ public class SearchRoleTableParam extends PageRequest {
 
     private String roleName;
 
+    private Integer status;
+
+    private String createTimeStart;
+
+    private String createTimeEnd;
+
 }

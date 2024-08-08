@@ -6,6 +6,7 @@ import com.imzyao.modules.entity.SysUser;
 import com.imzyao.results.Result;
 import com.imzyao.service.ISysUserService;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,6 +35,7 @@ public class SysUserController {
      */
     @GetMapping("list")
 //    @PreAuthorize("hasAnyAuthority('system:user:list')")
+    @ApiOperation("获取用户列表")
     public Result<IPage<SysUser>> list(SearchUserTableParam param) {
         IPage<SysUser> iPage = sysUserService.queryTableList(param);
         return Result.success(iPage);
