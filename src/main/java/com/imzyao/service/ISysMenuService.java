@@ -1,14 +1,13 @@
 package com.imzyao.service;
 
-import com.imzyao.modules.dto.SearchMenuTableParam;
+import com.imzyao.modules.dto.menu.SearchMenuTableParam;
 import com.imzyao.modules.entity.SysMenu;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.imzyao.modules.entity.SysUser;
-import com.imzyao.modules.vo.RouterVo;
+import com.imzyao.modules.vo.RouterVO;
 
 import java.security.Principal;
 import java.util.List;
-import java.util.Set;
 
 /**
  * <p>
@@ -32,7 +31,7 @@ public interface ISysMenuService extends IService<SysMenu> {
      * @param principal
      * @return
      */
-    List<RouterVo> userRouterList(Principal principal);
+    List<RouterVO> userRouterList(Principal principal);
 
 
     /**
@@ -41,7 +40,7 @@ public interface ISysMenuService extends IService<SysMenu> {
      * @param menus
      * @return
      */
-    List<RouterVo> buildRouterInfo(List<SysMenu> menus);
+    List<RouterVO> buildRouterInfo(List<SysMenu> menus);
 
     /**
      * 获取系统菜单

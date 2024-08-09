@@ -10,7 +10,7 @@ import lombok.Setter;
  */
 @Setter
 @Getter
-public class MetaVo {
+public class MetaVO {
 
 
     /**

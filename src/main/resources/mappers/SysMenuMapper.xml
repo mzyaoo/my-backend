@@ -28,7 +28,7 @@
     </select>
 
     <select id="getMenuList" resultType="com.imzyao.modules.entity.SysMenu"
-            parameterType="com.imzyao.modules.dto.SearchMenuTableParam">
+            parameterType="com.imzyao.modules.dto.menu.SearchMenuTableParam">
         <include refid="selectMenuSql"/>
         <where>
             <if test="param.menuName != null and param.menuName != ''">

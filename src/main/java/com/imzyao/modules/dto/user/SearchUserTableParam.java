@@ -1,4 +1,4 @@
-package com.imzyao.modules.dto;
+package com.imzyao.modules.dto.user;
 
 import com.imzyao.modules.PageRequest;
 

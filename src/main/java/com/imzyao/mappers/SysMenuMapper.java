@@ -1,12 +1,11 @@
 package com.imzyao.mappers;
 
-import com.imzyao.modules.dto.SearchMenuTableParam;
+import com.imzyao.modules.dto.menu.SearchMenuTableParam;
 import com.imzyao.modules.entity.SysMenu;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
-import java.util.Set;
 
 /**
  * <p>

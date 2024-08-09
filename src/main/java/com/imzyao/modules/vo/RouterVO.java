@@ -12,7 +12,7 @@ import java.util.List;
  */
 @Data
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class RouterVo {
+public class RouterVO {
 
     /**
      * 菜单路径
@@ -36,12 +36,12 @@ public class RouterVo {
     /**
      *
      */
-    private MetaVo meta;
+    private MetaVO meta;
 
     /**
      * 子路由
      */
-    private List<RouterVo> children;
+    private List<RouterVO> children;
 
 
 }

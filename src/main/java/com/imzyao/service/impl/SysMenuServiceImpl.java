@@ -4,16 +4,14 @@ import cn.hutool.core.collection.CollectionUtil;
 import com.imzyao.constant.UserConstants;
 import com.imzyao.enums.ResponseCode;
 import com.imzyao.mappers.SysUserMapper;
-import com.imzyao.modules.dto.SearchMenuTableParam;
+import com.imzyao.modules.dto.menu.SearchMenuTableParam;
 import com.imzyao.modules.entity.SysMenu;
 import com.imzyao.mappers.SysMenuMapper;
 import com.imzyao.modules.entity.SysUser;
-import com.imzyao.modules.vo.MetaVo;
-import com.imzyao.modules.vo.RouterVo;
-import com.imzyao.results.Result;
+import com.imzyao.modules.vo.MetaVO;
+import com.imzyao.modules.vo.RouterVO;
 import com.imzyao.service.ISysMenuService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.imzyao.service.ISysUserService;
 import com.imzyao.utils.ThrowUtils;
 import org.springframework.stereotype.Service;
 
@@ -42,7 +40,7 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     }
 
     @Override
-    public List<RouterVo> userRouterList(Principal principal) {
+    public List<RouterVO> userRouterList(Principal principal) {
         String username = principal.getName();
         SysUser sysUser = sysUserMapper.selectByUserName(username);
         // 校验用户是否存在，不存在抛出异常
@@ -58,16 +56,16 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
     }
 
     @Override
-    public List<RouterVo> buildRouterInfo(List<SysMenu> menus) {
+    public List<RouterVO> buildRouterInfo(List<SysMenu> menus) {
 
-        List<RouterVo> routers = new ArrayList<>();
+        List<RouterVO> routers = new ArrayList<>();
         for (SysMenu menu : menus) {
-            RouterVo router = new RouterVo();
+            RouterVO router = new RouterVO();
             router.setPath(menu.getPath());
             router.setComponent(menu.getComponent());
             router.setName(menu.getName());
             router.setSort(menu.getOrderNum());
-            MetaVo meta = genMetaFormMenu(menu);
+            MetaVO meta = genMetaFormMenu(menu);
             router.setMeta(meta);
             if (CollectionUtil.isNotEmpty(menu.getChildren())) {
                 router.setChildren(buildRouterInfo(menu.getChildren()));
@@ -169,8 +167,8 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
         return tlist;
     }
 
-    private MetaVo genMetaFormMenu(SysMenu menu) {
-        MetaVo meta = new MetaVo();
+    private MetaVO genMetaFormMenu(SysMenu menu) {
+        MetaVO meta = new MetaVO();
         meta.setIcon(menu.getIcon());
         meta.setHidden(menu.getVisible().equals("1"));
         return meta;

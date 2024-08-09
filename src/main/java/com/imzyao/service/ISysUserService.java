@@ -2,15 +2,16 @@ package com.imzyao.service;
 
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.imzyao.modules.dto.SearchUserTableParam;
+import com.imzyao.modules.dto.user.AddUserParam;
+import com.imzyao.modules.dto.user.EditUserParam;
+import com.imzyao.modules.dto.user.SearchUserTableParam;
 import com.imzyao.modules.entity.SysUser;
 import com.imzyao.modules.vo.UserInfoVO;
-import com.imzyao.modules.dto.LoginParam;
+import com.imzyao.modules.dto.login.LoginParam;
 import com.imzyao.modules.vo.LoginVO;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.security.Principal;
-import java.util.List;
 
 /**
  * <p>
@@ -65,23 +66,23 @@ public interface ISysUserService extends IService<SysUser> {
     /**
      * 新增数据
      *
-     * @param sysUser
+     * @param param
      */
-    void add(SysUser sysUser);
+    void add(AddUserParam param, Principal principal);
 
 
     /**
      * 根据id修改数据
      *
-     * @param sysUser
+     * @param param
      */
-    void editById(SysUser sysUser);
+    void editById(EditUserParam param, Principal principal);
 
     /**
      * 根据id删除数据
      *
      * @param id
      */
-    void deleteById(Integer id);
+    void deleteById(Integer id, Principal principal);
 
 }

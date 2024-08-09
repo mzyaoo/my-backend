@@ -1,4 +1,4 @@
-package com.imzyao.modules.dto;
+package com.imzyao.modules.dto.role;
 
 import com.imzyao.modules.PageRequest;
 import lombok.Data;

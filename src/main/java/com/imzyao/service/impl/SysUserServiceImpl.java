@@ -1,5 +1,6 @@
 package com.imzyao.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -9,11 +10,13 @@ import com.imzyao.constant.RedisConstants;
 import com.imzyao.constant.UserConstants;
 import com.imzyao.enums.ResponseCode;
 import com.imzyao.mappers.SysMenuMapper;
-import com.imzyao.modules.dto.SearchUserTableParam;
+import com.imzyao.modules.dto.user.AddUserParam;
+import com.imzyao.modules.dto.user.EditUserParam;
+import com.imzyao.modules.dto.user.SearchUserTableParam;
 import com.imzyao.modules.entity.SysMenu;
 import com.imzyao.modules.entity.SysUser;
 import com.imzyao.modules.vo.UserInfoVO;
-import com.imzyao.modules.dto.LoginParam;
+import com.imzyao.modules.dto.login.LoginParam;
 import com.imzyao.mappers.SysUserMapper;
 import com.imzyao.modules.vo.LoginVO;
 import com.imzyao.security.entity.CustomUserDetails;
@@ -32,6 +35,7 @@ import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.security.Principal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -187,18 +191,68 @@ public class SysUserServiceImpl extends ServiceImpl<SysUserMapper, SysUser> impl
     }
 
     @Override
-    public void add(SysUser sysUser) {
+    public void add(AddUserParam param, Principal principal) {
+
+        // 操作者
+        String optionName = principal.getName();
+
+        // 参数
+        String userName = param.getUserName();
+        String passWord = param.getPassWord();
+        String nickName = param.getNickName();
+
+        // 校验参数
+        ThrowUtils.throwIf(StringUtils.isEmpty(userName), ResponseCode.SYSTEM_ERROR, "用户名不能为空！");
+        ThrowUtils.throwIf(StringUtils.isEmpty(passWord), ResponseCode.SYSTEM_ERROR, "密码不能为空！");
+        ThrowUtils.throwIf(StringUtils.isEmpty(nickName), ResponseCode.SYSTEM_ERROR, "昵称不能为空！");
+
+        // 构建数据表对象
+        SysUser sysUser = new SysUser();
+        BeanUtil.copyProperties(param, sysUser);
+        sysUser.setDelFlag("0");
+        sysUser.setCreateBy(optionName);
+        sysUser.setUpdateBy(optionName);
+
+        // 新增用户
         this.save(sysUser);
     }
 
     @Override
-    public void editById(SysUser sysUser) {
+    public void editById(EditUserParam param, Principal principal) {
+        // 操作者
+        String optionName = principal.getName();
+
+        // 参数
+        String userName = param.getUserName();
+        String passWord = param.getPassWord();
+        String nickName = param.getNickName();
+        Integer id = param.getId();
+
+        // 校验参数
+        ThrowUtils.throwIf(id == null, ResponseCode.SYSTEM_ERROR, "用户id不能为空！");
+        ThrowUtils.throwIf(StringUtils.isEmpty(userName), ResponseCode.SYSTEM_ERROR, "用户名不能为空！");
+        ThrowUtils.throwIf(StringUtils.isEmpty(passWord), ResponseCode.SYSTEM_ERROR, "密码不能为空！");
+        ThrowUtils.throwIf(StringUtils.isEmpty(nickName), ResponseCode.SYSTEM_ERROR, "昵称不能为空！");
+
+        // 构建数据表对象
+        SysUser sysUser = new SysUser();
+        BeanUtil.copyProperties(param, sysUser);
+        sysUser.setUpdateBy(optionName);
+        // 修改数据库中的数据
         this.updateById(sysUser);
     }
 
     @Override
-    public void deleteById(Integer id) {
-
+    public void deleteById(Integer id, Principal principal) {
+        // 操作者
+        String optionName = principal.getName();
+        // 构建参数
+        SysUser sysUser = new SysUser();
+        sysUser.setId(id);
+        sysUser.setDelFlag("1");
+        sysUser.setUpdateBy(optionName);
+        // 修改数据库中的数据
+        this.updateById(sysUser);
     }
 
 

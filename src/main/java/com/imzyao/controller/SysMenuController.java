@@ -1,6 +1,6 @@
 package com.imzyao.controller;
 
-import com.imzyao.modules.dto.SearchMenuTableParam;
+import com.imzyao.modules.dto.menu.SearchMenuTableParam;
 import com.imzyao.modules.entity.SysMenu;
 import com.imzyao.results.Result;
 import com.imzyao.service.ISysMenuService;

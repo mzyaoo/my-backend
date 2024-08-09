@@ -1,9 +1,9 @@
 package com.imzyao.controller;
 
 import com.imzyao.modules.vo.LoginVO;
-import com.imzyao.modules.vo.RouterVo;
+import com.imzyao.modules.vo.RouterVO;
 import com.imzyao.modules.vo.UserInfoVO;
-import com.imzyao.modules.dto.LoginParam;
+import com.imzyao.modules.dto.login.LoginParam;
 import com.imzyao.results.Result;
 import com.imzyao.service.ISysMenuService;
 import com.imzyao.service.ISysUserService;
@@ -58,9 +58,9 @@ public class SysLoginController {
      */
     @ApiOperation("查询用户菜单权限")
     @PostMapping("getUserMenu")
-    public Result<List<RouterVo>> getUserMenu(Principal principal) {
-        List<RouterVo> routerVos = sysMenuService.userRouterList(principal);
-        return Result.success(routerVos);
+    public Result<List<RouterVO>> getUserMenu(Principal principal) {
+        List<RouterVO> routerVOS = sysMenuService.userRouterList(principal);
+        return Result.success(routerVOS);
     }
 
 }

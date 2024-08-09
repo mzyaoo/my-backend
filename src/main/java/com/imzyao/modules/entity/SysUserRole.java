@@ -1,9 +1,12 @@
 package com.imzyao.modules.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * <p>
@@ -13,6 +16,8 @@ import io.swagger.annotations.ApiModelProperty;
  * @author imzyao
  * @since 2024-08-06
  */
+@Setter
+@Getter
 @TableName("sys_user_role")
 @ApiModel(value = "SysUserRole对象", description = "用户和角色关联表")
 public class SysUserRole implements Serializable {
@@ -24,21 +29,6 @@ public class SysUserRole implements Serializable {
 
     @ApiModelProperty("角色ID")
     private Long roleId;
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
-    }
-    public Long getRoleId() {
-        return roleId;
-    }
-
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
-    }
 
     @Override
     public String toString() {

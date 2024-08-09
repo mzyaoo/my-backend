@@ -1,4 +1,4 @@
-package com.imzyao.modules.dto;
+package com.imzyao.modules.dto.menu;
 
 import lombok.Data;
 import lombok.ToString;
